@@ -1,12 +1,14 @@
 package models
 
 import (
+	"github.com/worldofprasanna/go-scraper/errorhandlers"
 	"fmt"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 	"io/ioutil"
 	"regexp"
+	"strconv"
 )
 
 // NSEScrapper - Scrapper which can scrape the NSE website and fetch the information
@@ -38,16 +40,17 @@ func NewNSEScrapper(symbol string) *NSEScrapper {
 func (scrapper NSEScrapper) FetchBoardMeetingDetails() (*BoardMeeting, error) {
 	resp, err := http.Get(scrapper.URL)
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 
 	boardMeetingInfo := BoardMeeting{}
-	if err := boardMeetingInfo.UnmarshalJSON([]byte(body)); err != nil {
+	if err := boardMeetingInfo.UnmarshalJSON(body); err != nil {
 		log.Println(err)
 		return nil, err
 	}
@@ -57,10 +60,19 @@ func (scrapper NSEScrapper) FetchBoardMeetingDetails() (*BoardMeeting, error) {
 
 // UnmarshalJSON - Override the UnmarshalJSON and parse the values accordingly
 func (val *BoardMeeting) UnmarshalJSON(data []byte) error {
-
 	body := string(data)
 	layoutForDate := "2-Jan-2006"
 	var err error
+	resultsRE := regexp.MustCompile("results:(.*?),")
+	count, err := strconv.Atoi(resultsRE.FindStringSubmatch(body)[1])
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		return errorhandlers.NewNoDataFound("No meetings found for the company.")
+	}
+
 	companyNameRE := regexp.MustCompile("CompanyName:\"(.*?)\"")
 	meetingDateRE := regexp.MustCompile("BoardMeetingDate:\"(.*?)\"")
 	purposeRE := regexp.MustCompile("Purpose:\"(.*?)\"")
