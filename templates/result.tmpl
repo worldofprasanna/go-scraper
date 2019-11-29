@@ -1,3 +1,39 @@
-<h1>
-  Board Meeting information for: {{ .title }}
-</h1>
+<html>
+   <head>
+      <style>
+         table, th, td {
+         border: 1px solid black;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>
+         Board Meeting information for: {{ .company_name }}
+      </h1>
+      <table>
+         <tr>
+            <td>
+               Meeting Date
+            </td>
+            <td>
+               Purpose
+            </td>
+            <td>
+               Details
+            </td>
+         </tr>
+         <tr>
+            <td>
+               {{ .meeting_date }}
+            </td>
+            <td>
+               {{ .purpose }}
+            </td>
+            <td>
+               {{ .details }}
+            </td>
+         </tr>
+      </table>
+      <a href="/">Search for another Stock</a>
+   </body>
+</html>
