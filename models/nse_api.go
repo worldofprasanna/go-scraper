@@ -15,6 +15,7 @@ import (
 type NSEScrapper struct {
 	URL string
 	Symbol string
+	Client *http.Client
 }
 
 // BoardMeeting - Struct used to capture the NSE Board Meeting values
@@ -30,21 +31,22 @@ var baseURL = "https://www.nseindia.com/corporates/corpInfo/equities/getBoardMee
 // NewNSEScrapper - Creates new scrapper with the given symbol
 func NewNSEScrapper(symbol string) *NSEScrapper {
 	url := fmt.Sprintf(baseURL, symbol, symbol)
+	httpClient := http.Client {}
 	return &NSEScrapper {
 		URL: url,
 		Symbol: symbol,
+		Client: &httpClient,
 	}
 }
 
 // FetchBoardMeetingDetails - Fetches information about the board meeting
 func (scrapper NSEScrapper) FetchBoardMeetingDetails() (*BoardMeeting, error) {
-	resp, err := http.Get(scrapper.URL)
+	resp, err := scrapper.Client.Get(scrapper.URL)
 	if err != nil {
 		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(body))
 	if err != nil {
 		return nil, err
 	}
