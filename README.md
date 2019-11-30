@@ -6,20 +6,36 @@
 
 ## Table of Contents
 
-- [Install](#install)
-- [Usage](#usage)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-- [License](#license)
+- [go-scraper](#go-scraper)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+  - [Install Using Docker](#install-using-docker)
+  - [Maintainers](#maintainers)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Install
 
 ```
+# To run the unit test
+./bin/test
+
+# This needs go version to be >= 1.11 because of go modules dependency
+./bin/build
+
+# To start the server
+./app
+
 ```
 
-## Usage
+## Install Using Docker
 
 ```
+# Build the docker image
+docker build -t nse_scrapper .
+
+# Run the docker container
+docker run -p 8080:8080 nse_scrapper
 ```
 
 ## Maintainers
