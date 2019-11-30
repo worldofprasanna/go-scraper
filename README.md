@@ -1,6 +1,7 @@
 # go-scraper
 
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+[![Maintainability](https://api.codeclimate.com/v1/badges/7a6c3b78f3c0130d1bd5/maintainability)](https://codeclimate.com/github/worldofprasanna/go-scraper/maintainability)
 
 > Scrape NSE website to get the board meeting information
 
