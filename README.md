@@ -24,7 +24,10 @@
 # This needs go version to be >= 1.11 because of go modules dependency
 ./bin/build
 
-# To start the server
+# To run the application
+./bin/run
+
+# To start the server from binary
 ./app
 
 ```
