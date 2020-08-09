@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
-	"github.com/worldofprasanna/go-scraper/models"
-	"github.com/worldofprasanna/go-scraper/errorhandlers"
+
+	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
+	"github.com/worldofprasanna/go-scraper/errorhandlers"
+	"github.com/worldofprasanna/go-scraper/models"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 			"title": title,
 		})
 	})
+
 	r.POST("/board_meeting", func(c *gin.Context) {
 		symbol := c.PostForm("symbol")
 		scrapper := models.NewNSEScrapper(symbol)
@@ -33,10 +35,10 @@ func main() {
 			})
 		} else {
 			c.HTML(http.StatusOK, "result.tmpl", gin.H{
-				"symbol": symbol,
+				"symbol":       symbol,
 				"company_name": meetingInfo.CompanyName,
-				"purpose": meetingInfo.Purpose,
-				"details": meetingInfo.Details,
+				"purpose":      meetingInfo.Purpose,
+				"details":      meetingInfo.Details,
 				"meeting_date": meetingInfo.ParsedMeetingDate(),
 			})
 		}
